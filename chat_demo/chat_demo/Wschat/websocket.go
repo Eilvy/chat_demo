@@ -18,7 +18,6 @@ type Client struct {
 	Conn     map[string]*websocket.Conn //连接池
 	username string
 	send     map[string]chan []byte
-	//online   map[string]map[string]chan []byte
 }
 
 var (
@@ -42,8 +41,6 @@ func WsChat(ctx *gin.Context) {
 		Conn:     make(map[string]*websocket.Conn),
 		username: "talker" + strconv.Itoa(rand.Intn(10000)+1000),
 		send:     make(map[string]chan []byte),
-
-		//online:   make(map[string]map[string]chan []byte),
 	}
 	id := ctx.Param("id")
 
@@ -51,8 +48,6 @@ func WsChat(ctx *gin.Context) {
 
 	//心跳计时器
 	pingTicker := time.NewTicker(time.Second * 10)
-
-	//client.online[id][client.username] <- []byte(client.username)
 
 	conn, err := Upgrade.Upgrade(ctx.Writer, ctx.Request, nil)
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// SessionKey 请求access token接口的返回格式
+// SessionKey 请求session_key openid接口的返回格式
 type SessionKey struct {
 	Openid     string `json:"openid"`
 	SessionKey string `json:"session_key"`
@@ -16,7 +16,7 @@ type SessionKey struct {
 	model.WxError
 }
 
-func WxGetOpenid(code string) (ac SessionKey, err error) {
+func WxGetOpenid(code string) (sc SessionKey, err error) {
 	url := fmt.Sprintf(model.UrlAccessOpenIdWx, model.WX_APPID, model.WX_APPKEY, code)
 
 	//发送请求向微信服务器
@@ -33,10 +33,10 @@ func WxGetOpenid(code string) (ac SessionKey, err error) {
 	}
 
 	//对返回体进行json解码
-	err = json.Unmarshal(data, &ac)
+	err = json.Unmarshal(data, &sc)
 	if err != nil {
 		return SessionKey{}, err
 	}
 
-	return ac, nil
+	return sc, nil
 }
